@@ -26,31 +26,30 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
           a.nav-link(type="button" data-bs-toggle="modal" data-bs-target="#logoutModal")
             font-awesome-icon(icon="sign-out-alt")
             |  Выход
-#loginModal.modal.fade(tabindex='-1' aria-labelledby='loginModalLabel' aria-hidden='true')
+#loginModal.modal.fade(tabindex='-1' aria-labelledby='loginModalLabel' aria-hidden='true' ref="loginModal")
   .modal-dialog
     .modal-content
       .modal-header
         h5#loginModalLabel.modal-title Вход в аккаунт 
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        Login(@closeModal="closeModal('loginModal')")
-#registerModal.modal.fade(tabindex='-1' aria-labelledby='ModalLabel' aria-hidden='true')
+        Login(@toggleModal="toggleModal")
+#registerModal.modal.fade(tabindex='-1' aria-labelledby='registerModalLabel' aria-hidden='true' ref="registerModal")
   .modal-dialog
     .modal-content
       .modal-header
         h5#registerModalLabel.modal-title Регистрация 
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        Register(@closeModal="closeModal('registerModal')")
-#logoutModal.modal.fade(tabindex='-1' aria-labelledby='ModalLabel' aria-hidden='true')
+        Register(@toggleModal="toggleModal")
+#logoutModal.modal.fade(tabindex='-1' aria-labelledby='logoutModalLabel' aria-hidden='true' ref="logoutModal")
   .modal-dialog
     .modal-content
       .modal-header
         h5#logoutModalLabel.modal-title Выход из аккаунта 
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        Logout(@closeModal="closeModal('logoutModal')")
-
+        Logout(@toggleModal="toggleModal")
 
 router-view
 </template>
@@ -73,7 +72,7 @@ export default {
     })
   },
   methods: {
-    closeModal(modalName) {
+    toggleModal(modalName) {
       const modalEl = document.getElementById(modalName)
       const modal = Modal.getInstance(modalEl)
       modal.toggle()

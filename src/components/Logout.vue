@@ -1,6 +1,6 @@
 <template lang="pug">
 .row
-  button.btn.btn-secondary.col.mx-3(@click="closeModal") Отмена
+  button.btn.btn-secondary.col.mx-3(@click="toggleModal") Отмена
   button.btn.btn-primary.col.mx-3(@click="logout") Выйти
 </template>
 
@@ -11,8 +11,8 @@ export default {
     ...mapActions({
       authLogout: "auth/logout",
     }),
-    closeModal() {
-      this.$emit('closeModal')  
+    toggleModal() {
+      this.$emit('toggleModal', 'logoutModal')  
     },
     logout() {
       this.authLogout()
