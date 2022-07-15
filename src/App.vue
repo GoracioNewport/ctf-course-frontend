@@ -6,12 +6,10 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
       span.navbar-toggler-icon
     #navbarSupportedContent.collapse.navbar-collapse
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
-        li.nav-item
-          router-link.nav-link(to='/') Home
-        li.nav-item
-          router-link.nav-link(to='/') Features
-        li.nav-item 
-          router-link.nav-link(to='/') Pricing
+        li.nav-item(v-for="route in routerLinks")
+          router-link.nav-link(:to="route.path") 
+            font-awesome-icon(:icon="route.icon")
+            |  {{ route.name }}
       ul.navbar-nav.mb-2.mb-lg-0(v-if="!getStatus.loggedIn")
         li.nav-item
           a.nav-link(type="button" data-bs-toggle="modal" data-bs-target="#registerModal") 
@@ -76,7 +74,12 @@ export default {
   },
   data() {
     return {
-      toasts: []
+      toasts: [],
+      routerLinks: [
+        {path: "/docs", name: "Материалы", icon: "book"},
+        {path: "/tasks", name: "Таски", icon: "list-check"},
+        {path: "/leaderboard", name: "Таблица лидеров", icon: "trophy"},
+      ]
     }
   },
   computed: {
@@ -117,6 +120,6 @@ export default {
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #222b35;
 }
+
 </style>

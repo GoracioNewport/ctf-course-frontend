@@ -7,7 +7,10 @@ import {
   faSignInAlt,
   faSignOutAlt,
   faCheck,
-  faExclamation
+  faExclamation,
+  faBook,
+  faListCheck,
+  faTrophy
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faCheck, faExclamation);
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faCheck, faExclamation, faBook, faListCheck, faTrophy);
 export { FontAwesomeIcon };
