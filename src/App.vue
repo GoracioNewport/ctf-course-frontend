@@ -6,10 +6,18 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
       span.navbar-toggler-icon
     #navbarSupportedContent.collapse.navbar-collapse
       ul.navbar-nav.me-auto.mb-2.mb-lg-0
-        li.nav-item(v-for="route in routerLinks")
-          router-link.nav-link(:to="route.path") 
+        li.nav-item(v-for="route in routerLinks" :class="{'dropdown': route.dropdown}")
+          router-link.nav-link(v-if="!route.dropdown" :to="route.path") 
             font-awesome-icon(:icon="route.icon")
             |  {{ route.name }}
+          a#navbarDropdown.nav-link.dropdown-toggle(v-else href="#" role="button" data-bs-toggle="dropdown" aria-expanded='false')
+            font-awesome-icon(:icon="route.icon")
+            |  {{ route.name }}
+          ul.dropdown-menu.dropdown-menu-dark(aria-labelledby="navbarDropdown")
+            li(v-for="item in route.items")
+              router-link.dropdown-item.d-flex(:to="item.path" :class="{'disabled':!item.unlocked}")
+                span {{ item.name }}
+                font-awesome-icon.ms-auto.my-auto(v-if="!item.unlocked" icon="lock")
       ul.navbar-nav.mb-2.mb-lg-0(v-if="!getStatus.loggedIn")
         li.nav-item
           a.nav-link(type="button" data-bs-toggle="modal" data-bs-target="#registerModal") 
@@ -64,7 +72,7 @@ import Login from "./components/Login.vue"
 import Register from "./components/Register.vue"
 import Logout from "./components/Logout.vue"
 import { Modal, Toast } from "bootstrap/dist/js/bootstrap.esm.js"
-import { mapGetters } from "vuex"
+import { mapGetters, mapActions } from "vuex"
 
 export default {
   components: {
@@ -77,17 +85,21 @@ export default {
       toasts: [],
       routerLinks: [
         {path: "/docs", name: "Материалы", icon: "book"},
-        {path: "/tasks", name: "Таски", icon: "list-check"},
+        {dropdown: true, name: "Таски", icon: "list-check", items: []},
         {path: "/leaderboard", name: "Таблица лидеров", icon: "trophy"},
-      ]
+      ],
+      routesLoading: true,
     }
-  },
+  }, 
   computed: {
     ...mapGetters({
       getStatus: "auth/getStatus"
     })
   },
   methods: {
+    ...mapActions({
+      fetchCourses: "task/fetchCourses"
+    }),
     toggleModal(modalName) {
       const modalEl = document.getElementById(modalName)
       const modal = Modal.getInstance(modalEl)
@@ -109,7 +121,18 @@ export default {
       const toast = new Toast(toastEl)
       toast.show()
     }
-  }
+  },
+  mounted() {
+    this.fetchCourses().then(
+      data => {
+        this.routerLinks[1].items = data
+        this.routesLoading = false
+      },
+      (error) => {
+        this.routesLoading = false
+      }
+    )
+  },
 }
 </script>
 
