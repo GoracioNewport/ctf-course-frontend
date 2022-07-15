@@ -15,7 +15,7 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
             |  {{ route.name }}
           ul.dropdown-menu.dropdown-menu-dark(aria-labelledby="navbarDropdown")
             li(v-for="item in route.items")
-              router-link.dropdown-item.d-flex(:to="item.path" :class="{'disabled':!item.unlocked}")
+              router-link.dropdown-item.d-flex(:to="'/course/' + item.path" :class="{'disabled':!item.unlocked}")
                 span {{ item.name }}
                 font-awesome-icon.ms-auto.my-auto(v-if="!item.unlocked" icon="lock")
       ul.navbar-nav.mb-2.mb-lg-0(v-if="!getStatus.loggedIn")
