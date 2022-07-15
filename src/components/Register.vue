@@ -19,8 +19,6 @@ Form.needs-validation.m-3(@submit="handleRegister(username, password)" :validati
     button.btn.btn-primary.col(:disabled="loading")
       span.spinner-border.spinner-border-sm.me-2(v-show="loading")
       span Зарегистрироваться
-.alert.m-3(v-if='message' :class="successful ? 'alert-success' : 'alert-danger'")
-  span {{ message }}
 </template>
 
 <script>
@@ -73,7 +71,8 @@ export default {
           this.message = "Регистрация успешна!" 
           this.successful = true
           this.loading = false
-          this.toggleLogin()
+          this.toggleModal()
+          this.$emit("createToast", {name: "Регистрация", message: "Аккаунт успешно зарегистрирован!", color: "bg-success"})
         },
         (error) => {
           this.message =
@@ -84,12 +83,18 @@ export default {
             error.toString();
           this.successful = false;
           this.loading = false;
+
+          let toastMessage = "Ошибка регистрации"
+          console.log(error)
+          if (error.response && error.response.status) toastMessage += ". Код: " + error.response.status
           
-          if (error.response.status == 400) {
+          if (error.response && error.response.status == 400) {
             this.$refs.form.setErrors({
               username: ['Пользователь существует!']
             })
           }
+
+          this.$emit("createToast", {name: "Регистрация", message: toastMessage, color: "bg-danger"})
         }
       )
     },

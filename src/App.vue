@@ -33,7 +33,7 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
         h5#loginModalLabel.modal-title Вход в аккаунт 
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        Login(@toggleModal="toggleModal")
+        Login(@toggleModal="toggleModal" @createToast="createToast")
 #registerModal.modal.fade(tabindex='-1' aria-labelledby='registerModalLabel' aria-hidden='true' ref="registerModal")
   .modal-dialog
     .modal-content
@@ -41,7 +41,7 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
         h5#registerModalLabel.modal-title Регистрация 
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        Register(@toggleModal="toggleModal")
+        Register(@toggleModal="toggleModal" @createToast="createToast")
 #logoutModal.modal.fade(tabindex='-1' aria-labelledby='logoutModalLabel' aria-hidden='true' ref="logoutModal")
   .modal-dialog
     .modal-content
@@ -49,15 +49,22 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
         h5#logoutModalLabel.modal-title Выход из аккаунта 
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        Logout(@toggleModal="toggleModal")
-
+        Logout(@toggleModal="toggleModal" @createToast="createToast")
+.toast-container.position-fixed.bottom-0.end-0.p-3(ref="toastContainer" style="z-index: 1051")
+  .toast(role="alert" aria-live="assertive" aria-atomic="true" v-for="toast in toasts" :id="toast.id")
+    .toast-header
+      .rounded.me-2(:class="toast.color" style="height: 20px; width: 20px")
+      strong {{ toast.name }}
+      button.btn-close.ms-auto(type='button' data-bs-dismiss='toast' aria-label='Close')
+    .toast-body
+      span {{ toast.message }}
 router-view
 </template>
 <script>
 import Login from "./components/Login.vue"
 import Register from "./components/Register.vue"
 import Logout from "./components/Logout.vue"
-import { Modal } from "bootstrap/dist/js/bootstrap.esm.js"
+import { Modal, Toast } from "bootstrap/dist/js/bootstrap.esm.js"
 import { mapGetters } from "vuex"
 
 export default {
@@ -65,6 +72,11 @@ export default {
     Login,
     Register,
     Logout,
+  },
+  data() {
+    return {
+      toasts: []
+    }
   },
   computed: {
     ...mapGetters({
@@ -76,6 +88,22 @@ export default {
       const modalEl = document.getElementById(modalName)
       const modal = Modal.getInstance(modalEl)
       modal.toggle()
+    },
+    createToast({name, message, color}) {
+      let id = 'toast' + this.toasts.length
+      this.toasts.push({
+        id, 
+        name,
+        message,
+        color
+      })
+
+      setTimeout(() => this.showToast(id), 10) 
+    },
+    showToast(id) {
+      const toastEl = document.getElementById(id)
+      const toast = new Toast(toastEl)
+      toast.show()
     }
   }
 }

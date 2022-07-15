@@ -16,7 +16,9 @@ export default {
     },
     logout() {
       this.authLogout()
-      this.$router.go()  
+      this.toggleModal()
+      this.$router.push("/") 
+      this.$emit("createToast", {name: "Выход", message: "Вы успешно вышли из аккаунта!", color: "bg-success"})
     }
   },
 }
