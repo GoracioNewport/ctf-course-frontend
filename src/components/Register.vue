@@ -72,7 +72,7 @@ export default {
           this.successful = true
           this.loading = false
           this.toggleModal()
-          this.$emit("createToast", {name: "Регистрация", message: "Аккаунт успешно зарегистрирован!", color: "bg-success"})
+          this.$emit("createToast", {name: "Регистрация", message: "Аккаунт успешно зарегистрирован!", type: "success"})
         },
         (error) => {
           this.message =
@@ -94,7 +94,7 @@ export default {
             })
           }
 
-          this.$emit("createToast", {name: "Регистрация", message: toastMessage, color: "bg-danger"})
+          this.$emit("createToast", {name: "Регистрация", message: toastMessage, type: "danger"})
         }
       )
     },

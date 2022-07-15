@@ -70,7 +70,7 @@ export default {
         () => {
           this.loading = false
           this.toggleModal()
-          this.$emit("createToast", {name: "Вход", message: "Вы успешно вошли в аккаунт!", color: "bg-success"}) 
+          this.$emit("createToast", {name: "Вход", message: "Вы успешно вошли в аккаунт!", type: "success"}) 
         },
         (error) => {
           this.loading = false;
@@ -82,7 +82,7 @@ export default {
             error.message ||
             error.toString();
           
-          this.$emit("createToast", {name: "Вход", message: "Ошибка входа в аккаунт :(", color: "bg-danger"})
+          this.$emit("createToast", {name: "Вход", message: "Ошибка входа в аккаунт :(", type: "danger"})
           if (error.response && error.response.status == 401) {
             this.$refs.form.setErrors({
               username: ["Неправильное имя пользователя..."],

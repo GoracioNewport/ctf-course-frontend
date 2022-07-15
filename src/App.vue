@@ -53,7 +53,8 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
 .toast-container.position-fixed.bottom-0.end-0.p-3(ref="toastContainer" style="z-index: 1051")
   .toast(role="alert" aria-live="assertive" aria-atomic="true" v-for="toast in toasts" :id="toast.id")
     .toast-header
-      .rounded.me-2(:class="toast.color" style="height: 20px; width: 20px")
+      font-awesome-icon.me-2(v-if="toast.type == 'success'" icon="check" style="font-size: 20 px; color: green")
+      font-awesome-icon.me-2(v-if="toast.type == 'danger'" icon="exclamation" style="font-size: 20 px; color: red")
       strong {{ toast.name }}
       button.btn-close.ms-auto(type='button' data-bs-dismiss='toast' aria-label='Close')
     .toast-body
@@ -89,13 +90,13 @@ export default {
       const modal = Modal.getInstance(modalEl)
       modal.toggle()
     },
-    createToast({name, message, color}) {
+    createToast({name, message, type}) {
       let id = 'toast' + this.toasts.length
       this.toasts.push({
         id, 
         name,
         message,
-        color
+        type
       })
 
       setTimeout(() => this.showToast(id), 10) 
