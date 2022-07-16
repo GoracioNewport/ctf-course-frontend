@@ -16,7 +16,7 @@
           th(scope="col") Решений
           th(scope="col") Вердикт
       tbody
-        tr(v-for="(task, ind) in tasks" :class="{'table-danger': solveStatus[task.id] == 1, 'table-success': solveStatus[task.id] == 2}")
+        tr(v-for="(task, ind) in tasks" :class="{'table-danger': solveStatus[task.id] == 1, 'table-success': solveStatus[task.id] == 2}" @click="openTask(ind)")
           th(scope="row") {{ ind }}
           td {{ task.name }}
           td {{ task.weight }}
@@ -24,26 +24,65 @@
           td
             span(v-if="solveStatus[task.id] == 1") Неправильный ответ
             span(v-else-if="solveStatus[task.id] == 2") Принято
+
+#taskModal.modal.fade(v-if="!loading && !error" tabindex='-1' aria-labelledby='taskModalLabel' aria-hidden='true' ref="taskModal")
+  .modal-dialog.modal-dialog-centered
+    .modal-content
+      .modal-header
+        h5#taskModalLabel.modal-title <strong> Таск: </strong> {{ tasks[selectedTaskInd].name }}
+        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+      .modal-body
+        span <strong> Описание: </strong> {{ tasks[selectedTaskInd].description }}
+        br
+        span <strong> Стоимость: </strong> {{ tasks[selectedTaskInd].weight }}
+        br
+        span <strong> Решений: </strong> {{ tasks[selectedTaskInd].solved }}
+        br
+        span <strong> Вердикт: </strong> 
+        span(v-if="solveStatus[tasks[selectedTaskInd].id] == 1" style="color: red") Неправильный ответ 
+        span(v-else-if="solveStatus[tasks[selectedTaskInd].id] == 2" style="color: green") Принято
+        span(v-else) Не решено
+      .modal-footer
+        .input-group.mb-3
+          input.form-control(type='text' placeholder="gctfc_" aria-label="Флаг" aria-describedby='sendFlagButton' :disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" v-model="taskAnswer")
+          button#sendFlagButton.btn.btn-primary(:disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" @click="sendAnswer")
+            span.spinner-border.spinner-border-sm.me-2(v-show="loadingAnswer")
+            span Сдать флаг
+        
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import { Modal } from "bootstrap/dist/js/bootstrap.esm.js"
 export default {
   data() {
     return {
       loading: true,
+      loadingAnswer: false,
       error: false,
       message: "",
       icon: "faBug",
       tasks: [],
-      solveStatus: []
+      solveStatus: [],
+      selectedTaskInd: 0,
+      taskAnswer: "",
     }
   },
   methods: {
     ...mapActions({
       fetchTasks: "task/fetchTasks",
       fetchSolveStatus: "task/fetchSolveStatus",
-    })
+    }),
+    openTask(id) {
+      this.taskAnswer = ""
+      this.selectedTaskInd = id
+      const modalEl = document.getElementById("taskModal")
+      const modal = new Modal(modalEl)
+      modal.toggle()
+    },
+    sendAnswer(answer) {
+      console.log("answer")
+    }
   },
   async mounted() {
     this.fetchSolveStatus().then(
@@ -56,14 +95,13 @@ export default {
     )
     this.fetchTasks(this.$route.params.name).then(
       data => {
-        this.loading = false
-        this.error = false
         this.tasks = data
+        this.loading = false
+        this.error = false 
       },
       error => {
         console.log("Failed fetching tasks: ", error)
-        this.loading = false
-        this.error = true
+        this.error = true 
         
         if (!error.response || !error.response.status) {
           this.icon = "bug"
@@ -80,6 +118,8 @@ export default {
             this.message = "Произошла неизвестная ошибка :("
           }
         }
+
+        this.loading = false
       }
     )
   }
