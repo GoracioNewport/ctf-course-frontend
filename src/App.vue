@@ -65,7 +65,7 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
       button.btn-close.ms-auto(type='button' data-bs-dismiss='toast' aria-label='Close')
     .toast-body
       span {{ toast.message }}
-router-view
+router-view(:key="$route.fullPath")
 </template>
 <script>
 import Login from "./components/Login.vue"

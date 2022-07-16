@@ -11,7 +11,12 @@ import {
   faBook,
   faListCheck,
   faTrophy,
-  faLock
+  faLock,
+  faBug,
+  faMagnifyingGlass,
+  faMugHot,
+  faCross,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
-library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faCheck, faExclamation, faBook, faListCheck, faTrophy, faLock);
+library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt, faCheck, faExclamation, faBook, faListCheck, faTrophy, faLock, faBug, faMagnifyingGlass, faMugHot, faCross, faXmark);
 export { FontAwesomeIcon };

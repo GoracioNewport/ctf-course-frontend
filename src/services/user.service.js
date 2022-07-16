@@ -5,5 +5,8 @@ class UserService {
   getUsers() {
     return axios.get(API_URL + 'users', { headers: authHeader() });
   }
+  getSolveStatus() {
+    return axios.get(API_URL + 'userSolved', { headers: authHeader() });
+  }
 }
 export default new UserService();
