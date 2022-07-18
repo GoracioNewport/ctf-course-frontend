@@ -8,5 +8,13 @@ class UserService {
   getSolveStatus() {
     return axios.get(API_URL + 'userSolved', { headers: authHeader() });
   }
+  sendAnswer(answer, taskId) {
+    return axios.post(API_URL + 'sendAnswer', {
+      answer: answer,
+      taskId: taskId,
+    }, {
+      headers: authHeader()
+    })
+  }
 }
 export default new UserService();

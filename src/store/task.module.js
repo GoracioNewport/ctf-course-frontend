@@ -34,11 +34,22 @@ export const task = {
     fetchSolveStatus({ commit }) {
       return UserService.getSolveStatus().then(
         ({ data }) => {
-          let listData = JSON.parse(data)
-          commit('setSolveStatus', listData)
-          return Promise.resolve(listData)
+          commit('setSolveStatus', data)
+          return Promise.resolve(data)
         },
         error => {
+          return Promise.reject(error)
+        }
+      )
+    },
+    sendAnswer({ commit }, { answer, taskId }) {
+      return UserService.sendAnswer(answer, taskId).then(
+        data => {
+          commit('setIndividualSolveStatus', { ind: taskId, status: 2 })
+          return Promise.resolve(data)
+        },
+        error => {
+          commit('setIndividualSolveStatus', { ind: taskId, status: 1 })
           return Promise.reject(error)
         }
       )
@@ -53,6 +64,11 @@ export const task = {
     },
     setSolveStatus(state, data) {
       state.solveStatus = data
+    },
+    setIndividualSolveStatus(state, { ind, status }) {
+      state.solveStatus[ind] = status
+      console.log(state.solveStatus)
+      console.log(ind, status)
     }
   },
   getters: {

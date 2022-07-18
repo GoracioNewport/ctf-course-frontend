@@ -44,17 +44,18 @@
         span(v-else) Не решено
       .modal-footer
         .input-group.mb-3
-          input.form-control(type='text' placeholder="gctfc_" aria-label="Флаг" aria-describedby='sendFlagButton' :disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" v-model="taskAnswer")
-          button#sendFlagButton.btn.btn-primary(:disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" @click="sendAnswer")
+          input.form-control(type='text' placeholder="gctfc_" aria-label="Флаг" aria-describedby='sendFlagButton' :disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" v-model="taskAnswer" :class="{'is-invalid': wrongAnswer, 'is-valid': rightAnswer }")
+          button#sendFlagButton.btn.btn-primary(:disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" @click="sendAnswer(taskAnswer, tasks[selectedTaskInd].id)")
             span.spinner-border.spinner-border-sm.me-2(v-show="loadingAnswer")
             span Сдать флаг
         
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { Modal } from "bootstrap/dist/js/bootstrap.esm.js"
 export default {
+  emits: ["createToast"],
   data() {
     return {
       loading: true,
@@ -66,22 +67,56 @@ export default {
       solveStatus: [],
       selectedTaskInd: 0,
       taskAnswer: "",
+      wrongAnswer: false,
+      rightAnswer: false,
     }
+  },
+  computed: {
+    ...mapGetters({
+      getSolveStatus: "task/getSolveStatus",
+    })
   },
   methods: {
     ...mapActions({
       fetchTasks: "task/fetchTasks",
       fetchSolveStatus: "task/fetchSolveStatus",
+      sendAnswerStore: "task/sendAnswer",
     }),
     openTask(id) {
       this.taskAnswer = ""
       this.selectedTaskInd = id
+      this.wrongAnswer = false
+      this.rightAnswer = false
       const modalEl = document.getElementById("taskModal")
       const modal = new Modal(modalEl)
       modal.toggle()
     },
-    sendAnswer(answer) {
-      console.log("answer")
+    sendAnswer(answer, taskId) {
+      this.loadingAnswer = true;
+      this.wrongAnswer = false
+      this.rightAnswer = false
+      this.sendAnswerStore({ answer, taskId }).then(
+        data => {
+          this.$emit("createToast", {name: "Вердикт", message: "Правильный ответ!", type: "success"}) 
+
+          this.tasks[this.selectedTaskInd].solved += 1
+          this.rightAnswer = true
+          this.solveStatus = this.getSolveStatus
+          this.loadingAnswer = false        
+        },
+        error => {
+          let modalMessage = "Ошибка отправки ответа! Код: " + error.response.status
+
+          if (error.response.status == 403) {
+            modalMessage = "Неправильный ответ :("
+            this.wrongAnswer = true
+          }
+
+          this.$emit("createToast", {name: "Вердикт", message: modalMessage, type: "danger"})
+          this.solveStatus = this.getSolveStatus
+          this.loadingAnswer = false
+        }
+      )
     }
   },
   async mounted() {
