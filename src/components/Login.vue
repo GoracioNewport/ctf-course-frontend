@@ -60,7 +60,7 @@ export default {
       login: "auth/login",
     }),
     toggleModal() {
-      this.$emit("toggleModal", "loginModal")
+      this.$emit("toggleModal", { modalName: "loginModal" })
     },
     handleLogin(username, password, remember) {
       this.loading = true;

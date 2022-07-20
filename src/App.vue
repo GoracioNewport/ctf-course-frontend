@@ -100,9 +100,9 @@ export default {
     ...mapActions({
       fetchCourses: "task/fetchCourses"
     }),
-    toggleModal(modalName) {
+    toggleModal({ modalName, create = false }) {
       const modalEl = document.getElementById(modalName)
-      const modal = Modal.getInstance(modalEl)
+      const modal = create ? new Modal(modalEl) : Modal.getInstance(modalEl)
       modal.toggle()
     },
     createToast({name, message, type}) {

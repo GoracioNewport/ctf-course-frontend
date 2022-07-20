@@ -12,7 +12,7 @@ export default {
       authLogout: "auth/logout",
     }),
     toggleModal() {
-      this.$emit('toggleModal', 'logoutModal')  
+      this.$emit('toggleModal', { modalName: 'logoutModal' })  
     },
     logout() {
       this.authLogout()

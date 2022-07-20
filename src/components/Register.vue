@@ -26,7 +26,7 @@ import { Form, Field, ErrorMessage } from "vee-validate"
 import * as yup from "yup"
 import { mapActions } from "vuex"
 export default {
-  emits: ["toggleModal"],
+  emits: ["toggleModal", "createToast"],
   components: {
     Form,
     Field,
@@ -72,7 +72,8 @@ export default {
           this.successful = true
           this.loading = false
           this.toggleModal()
-          this.$emit("createToast", {name: "Регистрация", message: "Аккаунт успешно зарегистрирован!", type: "success"})
+          this.toggleModal("loginModal", true)
+          this.$emit("createToast", {name: "Регистрация", message: "Аккаунт успешно зарегистрирован! Теперь войдите в него :)", type: "success"})
         },
         (error) => {
           this.message =
@@ -98,8 +99,8 @@ export default {
         }
       )
     },
-    toggleModal() {
-      this.$emit("toggleModal", "registerModal")
+    toggleModal(modalName = "registerModal", create = false) {
+      this.$emit("toggleModal", { modalName, create })
     }
   }
 }
