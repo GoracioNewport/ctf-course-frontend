@@ -55,6 +55,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { Modal } from "bootstrap/dist/js/bootstrap.esm.js"
+import { h } from '@vue/runtime-core'
 export default {
   emits: ["createToast", "toggleModal"],
   data() {
@@ -112,6 +113,8 @@ export default {
           if (error.response.status == 403) {
             modalMessage = "Неправильный ответ :("
             this.wrongAnswer = true
+          } else if (error.response.status == 401) {
+            this.handleExpiredSession()
           }
 
           this.$emit("createToast", {name: "Вердикт", message: modalMessage, type: "danger"})
