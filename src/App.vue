@@ -61,11 +61,12 @@ nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
     .toast-header
       font-awesome-icon.me-2(v-if="toast.type == 'success'" icon="check" style="font-size: 20 px; color: green")
       font-awesome-icon.me-2(v-if="toast.type == 'danger'" icon="exclamation" style="font-size: 20 px; color: red")
+      font-awesome-icon.me-2(v-if="toast.type == 'warning'" icon="triangle-exclamation" style="font-size 20px; color: yellow")
       strong {{ toast.name }}
       button.btn-close.ms-auto(type='button' data-bs-dismiss='toast' aria-label='Close')
     .toast-body
       span {{ toast.message }}
-router-view(:key="$route.fullPath" @createToast="createToast")
+router-view(:key="$route.fullPath" @createToast="createToast" @toggleModal="toggleModal")
 </template>
 <script>
 import Login from "./components/Login.vue"
@@ -101,6 +102,7 @@ export default {
       fetchCourses: "task/fetchCourses"
     }),
     toggleModal({ modalName, create = false }) {
+      console.log(modalName, create)
       const modalEl = document.getElementById(modalName)
       const modal = create ? new Modal(modalEl) : Modal.getInstance(modalEl)
       modal.toggle()

@@ -25,6 +25,7 @@
             span(v-if="solveStatus[task.id] == 1") Неправильный ответ
             span(v-else-if="solveStatus[task.id] == 2") Принято
 
+
 #taskModal.modal.fade(v-if="!loading && !error" tabindex='-1' aria-labelledby='taskModalLabel' aria-hidden='true' ref="taskModal")
   .modal-dialog.modal-dialog-centered
     .modal-content
@@ -55,7 +56,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { Modal } from "bootstrap/dist/js/bootstrap.esm.js"
 export default {
-  emits: ["createToast"],
+  emits: ["createToast", "toggleModal"],
   data() {
     return {
       loading: true,
@@ -81,7 +82,8 @@ export default {
       fetchTasks: "task/fetchTasks",
       fetchSolveStatus: "task/fetchSolveStatus",
       sendAnswerStore: "task/sendAnswer",
-    }),
+      authLogout: "auth/logout",
+    }), 
     openTask(id) {
       this.taskAnswer = ""
       this.selectedTaskInd = id
@@ -117,6 +119,15 @@ export default {
           this.loadingAnswer = false
         }
       )
+    },
+    toggleModal(modalName = "registerModal", create = false) {
+      this.$emit("toggleModal", { modalName, create })
+    },
+    handleExpiredSession() {
+      this.toggleModal("loginModal", true)
+      this.$emit("createToast", {name: "Авторизация", message: "Пожалуйста, войдите в аккаунт!", type: "warning"})
+      this.authLogout()
+      this.$router.push("/")
     }
   },
   async mounted() {
@@ -147,7 +158,9 @@ export default {
             this.message = "Такого курса нет! По крайней мере, Я не смог его найти..."
           } else if (error.response.status == 418) {
             this.icon = "mug-hot"
-            this.message = "Хорошая попытка. Но нет :)"
+            this.message = "Хорошая попытка. Но нет :)" 
+          } else if (error.response.status == 401) {
+            this.handleExpiredSession() 
           } else {
             this.icon = "bug"
             this.message = "Произошла неизвестная ошибка :("
