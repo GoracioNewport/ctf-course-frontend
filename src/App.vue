@@ -102,7 +102,6 @@ export default {
       fetchCourses: "task/fetchCourses"
     }),
     toggleModal({ modalName, create = false }) {
-      console.log(modalName, create)
       const modalEl = document.getElementById(modalName)
       const modal = create ? new Modal(modalEl) : Modal.getInstance(modalEl)
       modal.toggle()

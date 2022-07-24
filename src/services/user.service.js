@@ -15,6 +15,6 @@ class UserService {
     }, {
       headers: authHeader()
     })
-  }
+  } 
 }
 export default new UserService();

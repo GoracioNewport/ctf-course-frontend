@@ -8,5 +8,8 @@ class TaskService {
   getTasks(coursePath) {
     return axios.get(API_URL + 'courses/?path=' + coursePath, { headers: authHeader() });
   }
+  getLeaderboard() {
+    return axios.get(API_URL + "leaderboard");
+  }
 }
 export default new TaskService();

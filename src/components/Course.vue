@@ -63,7 +63,7 @@ export default {
       loadingAnswer: false,
       error: false,
       message: "",
-      icon: "faBug",
+      icon: "bug",
       tasks: [],
       solveStatus: [],
       selectedTaskInd: 0,
@@ -148,7 +148,6 @@ export default {
       error => {
         console.log("Failed fetching tasks: ", error)
         this.error = true 
-        
         if (!error.response || !error.response.status) {
           this.icon = "bug"
           this.message = "Произошла неизвестная ошибка :("

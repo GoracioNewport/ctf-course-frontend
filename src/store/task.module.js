@@ -7,6 +7,7 @@ export const task = {
     courses: [],
     tasks: [],
     solveStatus: [],
+    leaderboard: [],
   },
   actions: {
     fetchCourses({ commit }) {
@@ -53,6 +54,17 @@ export const task = {
           return Promise.reject(error)
         }
       )
+    },
+    fetchLeaderboard({ commit }) {
+      return TaskService.getLeaderboard().then(
+        ({ data }) => {
+          commit('setLeaderboard', data)
+          return Promise.resolve(data)
+        },
+        error => {
+          return Promise.reject(data)
+        }
+      )
     }
   },
   mutations: {
@@ -67,8 +79,9 @@ export const task = {
     },
     setIndividualSolveStatus(state, { ind, status }) {
       state.solveStatus[ind] = status
-      console.log(state.solveStatus)
-      console.log(ind, status)
+    },
+    setLeaderboard(state, data) {
+      state.leaderboard = data
     }
   },
   getters: {
