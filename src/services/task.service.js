@@ -1,15 +1,15 @@
 import axios from 'axios';
 import authHeader from './auth.headers';
-import { API_URL, agent } from '../constants';
+import { API_URL } from '../constants';
 class TaskService {
   getCourses() {
-    return axios.get(API_URL + 'courses', { httpsAgent: agent });
+    return axios.get(API_URL + 'courses');
   }
   getTasks(coursePath) {
-    return axios.get(API_URL + 'courses/?path=' + coursePath, { headers: authHeader(), httpsAgent: agent });
+    return axios.get(API_URL + 'courses/?path=' + coursePath, { headers: authHeader() });
   }
   getLeaderboard() {
-    return axios.get(API_URL + "leaderboard", { httpsAgent: agent });
+    return axios.get(API_URL + "leaderboard");
   }
 }
 export default new TaskService();
