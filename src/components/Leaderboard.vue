@@ -39,11 +39,13 @@ export default {
           sum += el.score[course.id]
         }) 
 
-        users.push({
-          name: el.username,
-          solved: scoring,
-          totalScore: sum,
-        })
+        if (el.username != "GoracioNewport") {
+          users.push({
+            name: el.username,
+            solved: scoring,
+            totalScore: sum,
+          })
+        }
 
       });
 
