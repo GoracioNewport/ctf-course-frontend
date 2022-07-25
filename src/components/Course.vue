@@ -98,6 +98,7 @@ export default {
       this.loadingAnswer = true;
       this.wrongAnswer = false
       this.rightAnswer = false
+      this.taskAnswer.replace(/\s/g, "");
       this.sendAnswerStore({ answer, taskId }).then(
         data => {
           this.$emit("createToast", {name: "Вердикт", message: "Правильный ответ!", type: "success"}) 
