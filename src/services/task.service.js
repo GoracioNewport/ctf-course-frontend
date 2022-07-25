@@ -11,5 +11,8 @@ class TaskService {
   getLeaderboard() {
     return axios.get(API_URL + "leaderboard");
   }
+  getDocs() {
+    return axios.get(API_URL + "getDocs");
+  }
 }
 export default new TaskService();

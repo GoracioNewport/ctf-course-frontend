@@ -8,6 +8,7 @@ export const task = {
     tasks: [],
     solveStatus: [],
     leaderboard: [],
+    docs: [],
   },
   actions: {
     fetchCourses({ commit }) {
@@ -62,7 +63,18 @@ export const task = {
           return Promise.resolve(data)
         },
         error => {
-          return Promise.reject(data)
+          return Promise.reject(error)
+        }
+      )
+    },
+    fetchDocs({ commit }) {
+      return TaskService.getDocs().then(
+        ({ data }) => {
+          commit('setDocs', data)
+          return Promise.resolve(data)
+        },
+        error => {
+          return Promise.reject(error)
         }
       )
     }
@@ -82,6 +94,9 @@ export const task = {
     },
     setLeaderboard(state, data) {
       state.leaderboard = data
+    },
+    setDocs(state, data) {
+      state.docs = data
     }
   },
   getters: {

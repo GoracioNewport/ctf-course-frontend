@@ -11,7 +11,11 @@
           th(scope="col") Итог
       tbody
         tr(v-for="(user, ind) in users")
-          th(scope="row") {{ user.name }}
+          th(scope="row") 
+            font-awesome-icon.me-2(v-if="ind == 0" icon="trophy" style="color: gold") 
+            font-awesome-icon.me-2(v-else-if="ind < 3" icon="medal" style="color: silver")
+            font-awesome-icon.me-2(v-else-if="ind < 5" icon="award" style="color: sienna")
+            span {{ user.name }}
           td(v-for="score in user.solved") {{ score }}
           td {{ user.totalScore }}
 </template>
@@ -49,11 +53,11 @@ export default {
 
       });
 
-      users.sort(function(a, b) {
+      this.users = users
+      this.users.sort(function(a, b) {
         return a.totalScore < b.totalScore
       })
 
-      this.users = users
       this.loading = false
     }, 
     error => {
