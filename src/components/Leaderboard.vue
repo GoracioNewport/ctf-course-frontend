@@ -54,8 +54,16 @@ export default {
       });
 
       this.users = users
-      this.users.sort(function(a, b) {
-        return a.totalScore < b.totalScore
+      this.users.sort((a, b) => {
+        if (a.totalScore < b.totalScore) {
+          return 1
+        }
+
+        if (a.totalScore > b.totalScore) {
+          return -1
+        }
+
+        return 0
       })
 
       this.loading = false
