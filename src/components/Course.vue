@@ -33,7 +33,7 @@
         h5#taskModalLabel.modal-title <strong> Таск: </strong> {{ tasks[selectedTaskInd].name }}
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        span <strong> Описание: </strong> {{ tasks[selectedTaskInd].description }}
+        span.text-break <strong> Описание: </strong> {{ tasks[selectedTaskInd].description }}
         br
         span <strong> Стоимость: </strong> {{ tasks[selectedTaskInd].weight }}
         br
