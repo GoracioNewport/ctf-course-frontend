@@ -9,11 +9,13 @@
     span.mb-5 <b>Таблица лидеров</b> - самым лучшим игрокам гарантирую приз :)
     span
     span Чего же ты ждешь, авторизуйся и вперед!
+  .text-block.text-white
+    span gctf_my_eyes_are_open
 </template>
 
 <style scoped>
 span {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 24px
+  font-size: 24px;
 }
 </style>
