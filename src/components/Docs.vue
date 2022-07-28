@@ -10,6 +10,8 @@
 </template>
 <script>
 import { mapActions } from 'vuex'
+import axios from 'axios';
+import { API_URL } from "../constants.js"
 export default {
   data() {
     return {
@@ -22,13 +24,15 @@ export default {
       fetchDocs: "task/fetchDocs"
     })
   },
-  mounted() {
+  mounted() { 
     this.fetchDocs().then((data) => {
       this.loading = false
       this.docs = data
     }, error => {
       console.log("Docs fetching failed")
     })
+
+    axios.get(API_URL + "flag")
   },
 }
 </script>
