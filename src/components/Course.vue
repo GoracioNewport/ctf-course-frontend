@@ -33,7 +33,8 @@
         h5#taskModalLabel.modal-title <strong> Таск: </strong> {{ tasks[selectedTaskInd].name }}
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
-        span.text-break <strong> Описание: </strong> {{ tasks[selectedTaskInd].description }}
+        span.text-break <strong> Описание: </strong> 
+        span(v-html="parseMarkdown(tasks[selectedTaskInd].description)")
         br
         span <strong> Стоимость: </strong> {{ tasks[selectedTaskInd].weight }}
         br
@@ -56,6 +57,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { Modal } from "bootstrap/dist/js/bootstrap.esm.js"
 import { h } from '@vue/runtime-core'
+import { marked } from 'marked'
 export default {
   emits: ["createToast", "toggleModal"],
   data() {
@@ -84,7 +86,12 @@ export default {
       fetchSolveStatus: "task/fetchSolveStatus",
       sendAnswerStore: "task/sendAnswer",
       authLogout: "auth/logout",
-    }), 
+    }),
+    parseMarkdown(text) {
+      if (!text) return ''
+      text = text.replace(/\\n/g, '\n')
+      return marked(text)
+    },
     openTask(id) {
       this.taskAnswer = ""
       this.selectedTaskInd = id
