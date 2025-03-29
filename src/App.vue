@@ -1,7 +1,7 @@
 <template lang="pug">
 nav.navbar.navbar-dark.bg-dark.navbar-expand-lg
   .container-fluid.m-2
-    router-link(to="/").navbar-brand GCTF
+    router-link(to="/").navbar-brand SHMITCTF
     button.navbar-toggler(type="button" data-bs-toggle="collapse" data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
       span.navbar-toggler-icon
     #navbarSupportedContent.collapse.navbar-collapse

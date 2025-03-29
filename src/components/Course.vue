@@ -46,7 +46,7 @@
         span(v-else) Не решено
       .modal-footer
         .input-group.mb-3
-          input.form-control(type='text' placeholder="gctf_" aria-label="Флаг" aria-describedby='sendFlagButton' :disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" v-model="taskAnswer" :class="{'is-invalid': wrongAnswer, 'is-valid': rightAnswer }")
+          input.form-control(type='text' placeholder="shmitctf_" aria-label="Флаг" aria-describedby='sendFlagButton' :disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" v-model="taskAnswer" :class="{'is-invalid': wrongAnswer, 'is-valid': rightAnswer }")
           button#sendFlagButton.btn.btn-primary(:disabled="loadingAnswer || solveStatus[tasks[selectedTaskInd].id] == 2" @click="sendAnswer(taskAnswer, tasks[selectedTaskInd].id)")
             span.spinner-border.spinner-border-sm.me-2(v-show="loadingAnswer")
             span Сдать флаг

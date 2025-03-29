@@ -10,7 +10,7 @@
     span
     span Чего же ты ждешь, авторизуйся и вперед!
   .text-block.text-white
-    span gctf_my_eyes_are_open
+    span shmitctf_my_eyes_are_open
 </template>
 
 <style scoped>
