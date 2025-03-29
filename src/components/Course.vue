@@ -16,7 +16,7 @@
           th(scope="col") Решений
           th(scope="col") Вердикт
       tbody
-        tr(v-for="(task, ind) in tasks" :class="{'table-danger': solveStatus[task.id] == 1, 'table-success': solveStatus[task.id] == 2}" @click="openTask(ind)")
+        tr(v-for="(task, ind) in [...tasks].sort((a, b) => a.weight - b.weight)" :class="{'table-danger': solveStatus[task.id] == 1, 'table-success': solveStatus[task.id] == 2}" @click="openTask(tasks.indexOf(task))")
           th(scope="row") {{ ind }}
           td {{ task.name }}
           td {{ task.weight }}
