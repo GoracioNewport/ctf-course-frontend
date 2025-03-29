@@ -43,7 +43,7 @@ export default {
           sum += el.score[course.id]
         }) 
 
-        if (el.username != "GoracioNewport") {
+        if (el.username != "GoracioNewport" && el.username != "Aksum") {
           users.push({
             name: el.username,
             solved: scoring,
